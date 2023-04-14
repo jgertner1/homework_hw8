@@ -1,7 +1,7 @@
-# Your name: 
-# Your student id:
-# Your email:
-# List who you have worked with on this homework:
+# Your name: Jackson Gertner
+# Your student id: 3536 9924
+# Your email: jgertner@umich.edu
+# List who you have worked with on this homework: Amelia Learner Jackson Gelbard
 
 import matplotlib.pyplot as plt
 import os
@@ -18,12 +18,51 @@ def load_rest_data(db):
     pass
 
 def plot_rest_categories(db):
-    """
-    This function accepts a file name of a database as a parameter and returns a dictionary. The keys should be the
-    restaurant categories and the values should be the number of restaurants in each category. The function should
-    also create a bar chart with restaurant categories and the count of number of restaurants in each category.
-    """
-    pass
+    path = os.path.dirname(os.path.abspath(__file__))
+
+    conn = sqlite3.connect(path + '/' + db)
+
+    cur = conn.cursor()
+
+
+
+    cur.execute("SELECT restaurants.name, restaurants.building_id, restaurants.rating, restaurants.category_id, buildings.id, buildings.building, categories.id, categories.category FROM restaurants INNER JOIN buildings ON restaurants.building_id = buildings.id INNER JOIN categories ON restaurants.category_id = categories.id")
+
+    rows = cur.fetchall()
+
+
+
+    cat_count = {}
+
+    for row in rows:
+        category = row[7]
+    if category not in cat_count:
+        cat_count[category] = 1
+    else:
+        cat_count[category] += 1
+    categories = cat_count.keys()
+
+    counts = cat_count.values()
+
+
+
+    plt.bar(categories, counts)
+
+    plt.xlabel('Restaurant Categories')
+
+    plt.ylabel('Number of Restaurants per Category')
+
+    plt.title('Restaurant Category Counts')
+
+    plt.xticks(rotation=90)
+
+    plt.show()
+
+
+
+    conn.close()
+
+    return cat_count
 
 def find_rest_in_building(building_num, db):
     '''
