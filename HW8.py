@@ -56,10 +56,10 @@ def plot_rest_categories(db):
 
     for row in rows:
         category = row[7]
-    if category not in cat_count:
-        cat_count[category] = 1
-    else:
-        cat_count[category] += 1
+        if category not in cat_count:
+            cat_count[category] = 1
+        else:
+            cat_count[category] += 1
     categories = cat_count.keys()
 
     counts = cat_count.values()
